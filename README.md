@@ -11,6 +11,9 @@ An R script containing functions used in Willis et al. (2020) is also provided, 
 
 Please describe problems with the pipeline or R script in the Github *Issues* tab. Please note that we do not have sufficient resources to provide support for basic Linux, perl, bash, R issues that are dataset/user-specific.
 
+## Other scripts to include     
+__Placeholder__ for different genotypes
+
 ## AtrGTseq-PLOIDYv1 (325)
 This code assumes that fastq files have been correctly demultiplexed prior to pipeline implementation. Genotype the samples using the following scripts. Make sure to verify the genotyping is complete before moving on. Use the command TOP and do not proceed until finished.
 
