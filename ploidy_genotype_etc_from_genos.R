@@ -1,7 +1,7 @@
 
-setwd("~/Desktop/");
+##setwd("~/Desktop/"); ## comment out by Mac 09112023
 
-
+setwd("./example-data/known_ploidy_genos/") #
 #######----------------------------------------------------------------------------------------------------------------
 ##ploidy estimation
 
@@ -15,7 +15,7 @@ if(!"tripsAndDipR" %in% installed.packages()){
 library(tripsAndDipR)
 library(parallel)
 
-# pull out read counts from sample sturgeon data, wd to be suppplied as argument
+# pull out read counts from sample sturgeon data, wd to be supplied as argument
 wd<-getwd()
 genosFiles <- dir(path = wd,pattern = "\\.genos$")
 tail(genosFiles)
@@ -88,12 +88,17 @@ print(paste(c("R script counted reads from ",nrow(refCounts)," files"),collapse=
 # fit models and calculate LLRs
 print("R script estimating ploidy: PLEASE WAIT")
 #fp <- funkyPloid(refCounts, altCounts, ploidy = ploidies, maxIter = 150, maxDiff = .01, model = "BB_noise")#non-parallel
+
+##Paralllel version
+## Mac 09112023 need to find funkyPloid function
 est_ploid<-function(i){
   funkyPloid(t(as.matrix(refCounts[i,])), t(as.matrix(altCounts[i,])), ploidy = ploidies, maxIter = 150, maxDiff = .01, model = "BB_noise")
 }
 time<-system.time(save<-mclapply(1:nrow(refCounts),est_ploid))
-#print(time)
+print(time)
+
 fp<-data.frame(matrix(unlist(save), nrow=length(save), byrow=T),stringsAsFactors=FALSE)
+
 colnames(fp)<-colnames(save[[1]])
 fp$Ind<-rownames(refCounts)
 fp[,2:ncol(fp)]<-apply(fp[,2:ncol(fp)],2,function(x) as.numeric(x))
@@ -1507,3 +1512,4 @@ nrow(df)
 ggplot(data=df,aes(x=percent.mismatch,fill=ploidy_match_class))+geom_density(adjust=0.1)
 
 #write.table(summed_mismatches_single,file="single-parent-mismatches.txt",append=FALSE,col.names = TRUE,row.names = FALSE,quote=FALSE,sep="\t")
+
